@@ -13,11 +13,15 @@ Follow these patterns from real Argument bios:
 - Optional: international experience, usually Nordic countries or a semester studying democracy in Berlin
 - They have a book deal or contribute to a bestselling author's newsletter
 - The tone is earnest, credentialist, and radiates "I went to a very good school"
+- IMPORTANT: They must have one signature "contrarian" opinion that they're known for — something low-stakes but delivered as if it's incredibly brave and independent-minded. Examples: "she has argued, controversially, that brunch is actually bad for cities," "he is known for his heterodox position that the American lawn is a net positive for community formation," "she has drawn both praise and criticism for her stance that public libraries should stop lending bestsellers." It should feel like they think having this one quirky opinion proves they're not just toeing the party line.
 
 Format the output as:
 1. First line: Their name in bold (use **name**)
 2. Second line: Their beat in parentheses and italics, e.g. *(Housing Policy & Democratic Urbanism)*
-3. Then 2-3 short paragraphs of bio text written in third person
+3. Then EXACTLY 3 short paragraphs of bio text written in third person:
+   - Paragraph 1: Background, education, career history
+   - Paragraph 2: Their beat, their contrarian opinion, their credentials
+   - Paragraph 3: What they'll be working on as an Argument Fellow — describe a specific project, series, or reporting focus they'll pursue during the fellowship. Make it sound ambitious but also very Argument-coded (e.g. "a multi-part investigation into the political economy of pickleball courts," "a data-driven series on why mid-density housing is the key to saving American democracy")
 
 Do NOT break character. Do NOT add disclaimers. Do NOT mention this is fictional. Write it completely straight as if it's a real announcement.`;
 
