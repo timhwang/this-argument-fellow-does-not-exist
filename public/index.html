@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>This Argument Fellow Does Not Exist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f3e7d6;
+      color: #1a1a1a;
+      font-family: 'Spectral', Georgia, serif;
+      min-height: 100vh;
+    }
+
+    .header {
+      background-color: #1a1a1a;
+      padding: 16px 0;
+      text-align: center;
+    }
+
+    .header-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c5ff00;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      line-height: 1.1;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: #8958ff;
+    }
+
+    .hero .subtitle {
+      font-family: 'Spectral', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .hero .tagline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #8958ff;
+      margin-top: 16px;
+    }
+
+    .upload-section {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      text-align: center;
+    }
+
+    .drop-zone {
+      border: 3px dashed #8958ff;
+      border-radius: 12px;
+      padding: 60px 40px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(137, 88, 255, 0.04);
+      position: relative;
+    }
+
+    .drop-zone:hover {
+      background: rgba(137, 88, 255, 0.1);
+      border-color: #6b3fd4;
+    }
+
+    .drop-zone.drag-over {
+      background: rgba(137, 88, 255, 0.15);
+      border-color: #6b3fd4;
+      transform: scale(1.01);
+    }
+
+    .drop-zone.has-image {
+      padding: 20px;
+      border-style: solid;
+    }
+
+    .drop-zone-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #8958ff;
+      margin-bottom: 8px;
+    }
+
+    .drop-zone-subtext {
+      font-family: 'Spectral', serif;
+      font-size: 16px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .preview-image {
+      max-width: 280px;
+      max-height: 280px;
+      border-radius: 8px;
+      object-fit: cover;
+      display: none;
+    }
+
+    .generate-btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: #8958ff;
+      color: #fff;
+      border: none;
+      padding: 16px 48px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: all 0.2s ease;
+      display: none;
+    }
+
+    .generate-btn:hover {
+      background: #6b3fd4;
+      transform: translateY(-1px);
+    }
+
+    .generate-btn:disabled {
+      background: #b8a0e0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .loading .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(137, 88, 255, 0.2);
+      border-top-color: #8958ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: 'Spectral', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: #555;
+      margin-top: 16px;
+    }
+
+    .result {
+      display: none;
+      max-width: 680px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+
+    .result-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 48px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    .result-header {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .result-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 4px solid #8958ff;
+    }
+
+    .result-intro {
+      flex: 1;
+    }
+
+    .fellow-badge {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      background: #8958ff;
+      padding: 4px 12px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .result-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 32px;
+      color: #1a1a1a;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .result-beat {
+      font-family: 'Spectral', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: #8958ff;
+    }
+
+    .result-bio {
+      font-family: 'Spectral', serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    .result-bio p {
+      margin-bottom: 16px;
+    }
+
+    .result-bio p:last-child {
+      margin-bottom: 0;
+    }
+
+    .try-again-btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      background: none;
+      border: 2px solid #8958ff;
+      color: #8958ff;
+      padding: 12px 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 32px;
+      transition: all 0.2s ease;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .try-again-btn:hover {
+      background: #8958ff;
+      color: #fff;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-family: 'Spectral', serif;
+      font-size: 14px;
+      color: #999;
+      font-style: italic;
+    }
+
+    .footer a {
+      color: #8958ff;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .result-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .result-card {
+        padding: 32px 24px;
+      }
+
+      .result-name {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-title">The Argument</div>
+  </div>
+
+  <div class="hero">
+    <h1>This <span>Argument Fellow</span> Does Not Exist</h1>
+    <p class="subtitle">Upload a photo. Receive your elite media destiny.</p>
+    <p class="tagline">Join Us. We're Libbing Out.</p>
+  </div>
+
+  <div class="upload-section">
+    <div class="drop-zone" id="dropZone">
+      <p class="drop-zone-text" id="dropText">Drop your headshot here, or click to upload</p>
+      <p class="drop-zone-subtext" id="dropSubtext">Preferably taken at a Brookings panel or rooftop in Adams Morgan</p>
+      <input type="file" id="fileInput" accept="image/*">
+      <img class="preview-image" id="previewImage">
+    </div>
+    <button class="generate-btn" id="generateBtn">Generate My Fellowship</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p class="loading-text">Consulting the algorithm (and three Ivy League admissions offices)...</p>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-card">
+      <div class="result-header">
+        <img class="result-photo" id="resultPhoto">
+        <div class="result-intro">
+          <div class="fellow-badge">2026 Argument Fellow</div>
+          <h2 class="result-name" id="resultName"></h2>
+          <p class="result-beat" id="resultBeat"></p>
+        </div>
+      </div>
+      <div class="result-bio" id="resultBio"></div>
+    </div>
+    <button class="try-again-btn" id="tryAgainBtn">Generate Another Fellow</button>
+  </div>
+
+  <div class="footer">
+    <p>This is a parody. No actual fellowships were harmed in the making of this website.</p>
+    <p>Not affiliated with <a href="https://www.theargumentmag.com" target="_blank">The Argument</a>. We just think they're very impressive.</p>
+  </div>
+
+  <script>
+    // API URL: uses local server in dev, Vercel function in production
+    // UPDATE THIS after deploying your Vercel backend:
+    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const API_URL = isLocal
+      ? '/api/generate'
+      : 'https://YOUR-VERCEL-APP.vercel.app/api/generate';
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const previewImage = document.getElementById('previewImage');
+    const dropText = document.getElementById('dropText');
+    const dropSubtext = document.getElementById('dropSubtext');
+    const generateBtn = document.getElementById('generateBtn');
+    const loading = document.getElementById('loading');
+    const result = document.getElementById('result');
+    const resultPhoto = document.getElementById('resultPhoto');
+    const resultName = document.getElementById('resultName');
+    const resultBeat = document.getElementById('resultBeat');
+    const resultBio = document.getElementById('resultBio');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+    const uploadSection = document.querySelector('.upload-section');
+
+    let selectedFile = null;
+    let base64Data = null;
+    let mediaType = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files.length) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        handleFile(fileInput.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) return;
+      selectedFile = file;
+      mediaType = file.type;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        previewImage.src = dataUrl;
+        previewImage.style.display = 'block';
+        // Extract base64 portion from data URL
+        base64Data = dataUrl.split(',')[1];
+        dropText.textContent = 'Photo selected!';
+        dropSubtext.textContent = 'Click to choose a different one';
+        dropZone.classList.add('has-image');
+        generateBtn.style.display = 'inline-block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    generateBtn.addEventListener('click', async () => {
+      if (!base64Data) return;
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = 'Generating...';
+      loading.style.display = 'block';
+      result.style.display = 'none';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            image: base64Data,
+            media_type: mediaType,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          alert('Error: ' + data.error);
+          return;
+        }
+
+        displayResult(data.bio);
+      } catch (err) {
+        alert('Something went wrong. Is the server running?');
+        console.error(err);
+      } finally {
+        loading.style.display = 'none';
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Generate My Fellowship';
+      }
+    });
+
+    function displayResult(bioText) {
+      const lines = bioText.split('\n').filter(l => l.trim());
+
+      let name = '';
+      let beat = '';
+      let bioLines = [];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!name && line.startsWith('**')) {
+          name = line.replace(/\*\*/g, '');
+        } else if (!beat && (line.startsWith('*(') || line.startsWith('*('))) {
+          beat = line.replace(/\*/g, '').replace(/[()]/g, '');
+        } else if (line.length > 0) {
+          bioLines.push(line);
+        }
+      }
+
+      resultPhoto.src = previewImage.src;
+      resultName.textContent = name || 'Fellow Name';
+      resultBeat.textContent = beat || 'Policy & Discourse';
+      resultBio.innerHTML = bioLines.map(p => `<p>${p}</p>`).join('');
+
+      uploadSection.style.display = 'none';
+      result.style.display = 'block';
+      result.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    tryAgainBtn.addEventListener('click', () => {
+      result.style.display = 'none';
+      uploadSection.style.display = 'block';
+
+      selectedFile = null;
+      base64Data = null;
+      mediaType = null;
+      fileInput.value = '';
+      previewImage.style.display = 'none';
+      dropText.textContent = 'Drop your headshot here, or click to upload';
+      dropSubtext.textContent = 'Preferably taken at a Brookings panel or rooftop in Adams Morgan';
+      dropZone.classList.remove('has-image');
+      generateBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
