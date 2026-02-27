@@ -729,31 +729,31 @@
       const textX = photoX + photoSize + 28;
       const textMaxW = contentW - photoSize - 28;
 
-      // Badge: "2026 ARGUMENT FELLOW" - bigger
-      ctx.font = '700 16px Inter, Helvetica Neue, Arial, sans-serif';
+      // Badge: "2026 ARGUMENT FELLOW"
+      ctx.font = '700 20px Inter, Helvetica Neue, Arial, sans-serif';
       ctx.fillStyle = '#8958ff';
-      drawTextWithSpacing(ctx, '2026 ARGUMENT FELLOW', textX, sectionY + 28, 2);
+      drawTextWithSpacing(ctx, '2026 ARGUMENT FELLOW', textX, sectionY + 30, 2.5);
 
       // Name - large bold
       const name = resultName.textContent;
-      ctx.font = '800 36px Inter, Helvetica Neue, Arial, sans-serif';
+      ctx.font = '800 46px Inter, Helvetica Neue, Arial, sans-serif';
       ctx.fillStyle = '#1a1a1a';
-      let nameSize = 36;
-      while (ctx.measureText(name).width > textMaxW && nameSize > 20) {
+      let nameSize = 46;
+      while (ctx.measureText(name).width > textMaxW && nameSize > 24) {
         nameSize -= 2;
         ctx.font = `800 ${nameSize}px Inter, Helvetica Neue, Arial, sans-serif`;
       }
-      ctx.fillText(name, textX, sectionY + 72);
+      ctx.fillText(name, textX, sectionY + 82);
 
       // Beat (italic, below name)
-      ctx.font = 'italic 22px Spectral, Georgia, serif';
+      ctx.font = 'italic 26px Spectral, Georgia, serif';
       ctx.fillStyle = '#8958ff';
       const beatText = resultBeat.textContent;
       // Wrap beat if too long
       if (ctx.measureText(beatText).width > textMaxW) {
-        wrapText(ctx, beatText, textX, sectionY + 104, textMaxW, 28, 2);
+        wrapText(ctx, beatText, textX, sectionY + 118, textMaxW, 32, 2);
       } else {
-        ctx.fillText(beatText, textX, sectionY + 104);
+        ctx.fillText(beatText, textX, sectionY + 118);
       }
 
       // Thin purple divider below photo+name section
