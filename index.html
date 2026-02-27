@@ -883,8 +883,8 @@
       overlay.className = 'share-overlay';
       overlay.innerHTML = `
         <div class="share-modal">
-          <p class="share-modal-title">Image downloaded!</p>
-          <p class="share-modal-text">Attach the image to your tweet. Opening X now...</p>
+          <p class="share-modal-title">Image saved!</p>
+          <p class="share-modal-text">Attach the downloaded image to your post on X.</p>
           <button class="share-modal-btn" id="openTwitterBtn">Open X / Twitter</button>
           <button class="share-modal-close" id="closeShareModal">&times;</button>
         </div>
@@ -924,7 +924,7 @@
         const siteUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
           ? 'https://timhwang.github.io/this-argument-fellow-does-not-exist/'
           : window.location.href;
-        const tweetText = 'Meet ' + name + ', 2026 Argument Fellow.\n\nThis Argument Fellow Does Not Exist\n\n' + siteUrl;
+        const tweetText = 'Excited to announce some personal news: I am a 2026 Argument Fellow.\n\n' + siteUrl;
 
         // Use Web Share API only on mobile (touch devices)
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
