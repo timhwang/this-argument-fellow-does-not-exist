@@ -926,8 +926,9 @@
           : window.location.href;
         const tweetText = 'Meet ' + name + ', 2026 Argument Fellow.\n\nThis Argument Fellow Does Not Exist\n\n' + siteUrl;
 
-        // Try Web Share API (mobile)
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        // Use Web Share API only on mobile (touch devices)
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({ text: tweetText, files: [file] });
             return;
@@ -936,7 +937,7 @@
           }
         }
 
-        // Desktop fallback: download + tweet intent
+        // Desktop: download image + open tweet intent
         downloadImage(blob, 'argument-fellow.png');
         showShareInstructions(tweetText);
 
