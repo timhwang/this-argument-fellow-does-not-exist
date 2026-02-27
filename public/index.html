@@ -582,7 +582,7 @@
           return;
         }
 
-        displayResult(data.bio);
+        await displayResult(data.bio);
       } catch (err) {
         alert('Something went wrong. Is the server running?');
         console.error(err);
@@ -593,7 +593,45 @@
       }
     });
 
-    function displayResult(bioText) {
+    function applyPurpleFilter(imgSrc) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+
+          // Draw original image
+          ctx.drawImage(img, 0, 0);
+
+          // Get pixel data
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+
+          // Purple duotone — bright, saturated, matching The Argument style
+          // Dark end: medium purple (75, 35, 140)
+          // Light end: very bright lavender (245, 230, 255)
+          for (let i = 0; i < data.length; i += 4) {
+            const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+            // Mild S-curve for contrast
+            let t = gray / 255;
+            t = t < 0.5
+              ? 1.5 * t * t + 0.25 * t
+              : 1 - (1.5 * (1 - t) * (1 - t) + 0.25 * (1 - t));
+            data[i]     = Math.round(75 + t * (245 - 75));    // R
+            data[i + 1] = Math.round(35 + t * (230 - 35));    // G
+            data[i + 2] = Math.round(140 + t * (255 - 140));  // B
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+          resolve(canvas.toDataURL('image/png'));
+        };
+        img.src = imgSrc;
+      });
+    }
+
+    async function displayResult(bioText) {
       const lines = bioText.split('\n').filter(l => l.trim());
 
       let name = '';
@@ -611,7 +649,9 @@
         }
       }
 
-      resultPhoto.src = previewImage.src;
+      // Apply purple duotone filter to the photo
+      const filteredSrc = await applyPurpleFilter(previewImage.src);
+      resultPhoto.src = filteredSrc;
       resultName.textContent = name || 'Fellow Name';
       resultBeat.textContent = beat || 'Policy & Discourse';
       resultBio.innerHTML = bioLines.map(p => {
